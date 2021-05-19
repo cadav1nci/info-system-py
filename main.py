@@ -26,11 +26,10 @@ def create_client(client):
 
 def list_clients():
     global clients
-    print("Clients:\n")
-    for i in clients:
-        for j, k in i.items():
-            print(j,":",k)
-        print("\n")
+    print("\nClients:")
+    for i, client in enumerate(clients):
+        print('{} - {} - {}'.format(i+1,client["name"],client["company"]))
+    print("\n")
     
      
 
@@ -39,8 +38,8 @@ def list_clients():
 def update_client(c,uc):
     global clients
     for i in range(0,len(clients)):
-        if clients[i] == c:
-            clients[i] = uc
+        if clients[i]["name"] == c:
+            clients[i]["name"] = uc
             print(f'{c} was updated to {uc} \n')
             list_clients()
             return True
@@ -68,17 +67,10 @@ def search_client(c):
 
 
 def _get_client_field(x):
-    # 1 for name
-    if x == 1:
-        return input("please type the name of the client: ")
-    # 2 for company
-    if x == 2:
-        return input("please type the company of the client: ")
-     # 3 for email
-    if x == 3:
-        return input("please type the mail of the client: ")
-    if x ==4:
-        return input("please type the role of the client: ")
+    field = None
+    while not field:
+        field = input('please type the {} of the client:'.format(x))
+    return field
 
                
    
@@ -103,10 +95,10 @@ if __name__ == "__main__":
 
     if command == "C":
         client = {
-        'name': _get_client_field(1),
-        'company': _get_client_field(2),
-        'email': _get_client_field(3),
-        'position': _get_client_field(4),
+        'name': _get_client_field('name'),
+        'company': _get_client_field('company'),
+        'email': _get_client_field('email'),
+        'position': _get_client_field('position'),
         }
         create_client(client)
         list_clients()
