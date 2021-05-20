@@ -1,22 +1,32 @@
-clients = [    {
-        'name': 'pablo',
-        'company': 'Google',
-        'email': 'pablo@google.com',
-        'position': 'Sofware Engineer',
-    },
-    {
-        'name': 'ricardo',
-        'company': 'Facebook',
-        'email': 'ricardo@facebook.com',
-        'position': 'Data Engineer',
-    },
-     {
-        'name': 'toño',
-        'company': 'Spotify',
-        'email': 'cadavinci@vsp.com',
-        'position': 'Data Engineer',
-    }]
+ import csv
 
+clients = [   # {
+#         'name': 'pablo',
+#         'company': 'Google',
+#         'email': 'pablo@google.com',
+#         'position': 'Sofware Engineer',
+#     },
+#     {
+#         'name': 'ricardo',
+#         'company': 'Facebook',
+#         'email': 'ricardo@facebook.com',
+#         'position': 'Data Engineer',
+#     },
+#      {
+#         'name': 'toño',
+#         'company': 'Spotify',
+#         'email': 'cadavinci@vsp.com',
+#         'position': 'Data Engineer',
+#     }
+]
+CLIENTS_TABLE = ".clients.csv"
+CLIENTS_SCHEMA = ["name","company","email","role"]
+def initialize_clients():
+    with open(CLIENTS_TABLE, mode="r")as f:
+        reader = csv.DictReader(f,fieldnames=CLIENTS_SCHEMA)
+        for row in reader:
+            clients.append(row)
+            
 def create_client(client):
     global clients
     if client not in clients:
