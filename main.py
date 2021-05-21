@@ -1,31 +1,24 @@
- import csv
+import csv
+import os
 
-clients = [   # {
-#         'name': 'pablo',
-#         'company': 'Google',
-#         'email': 'pablo@google.com',
-#         'position': 'Sofware Engineer',
-#     },
-#     {
-#         'name': 'ricardo',
-#         'company': 'Facebook',
-#         'email': 'ricardo@facebook.com',
-#         'position': 'Data Engineer',
-#     },
-#      {
-#         'name': 'toño',
-#         'company': 'Spotify',
-#         'email': 'cadavinci@vsp.com',
-#         'position': 'Data Engineer',
-#     }
-]
+clients = []
 CLIENTS_TABLE = ".clients.csv"
 CLIENTS_SCHEMA = ["name","company","email","role"]
+
 def initialize_clients():
     with open(CLIENTS_TABLE, mode="r")as f:
         reader = csv.DictReader(f,fieldnames=CLIENTS_SCHEMA)
         for row in reader:
             clients.append(row)
+
+def save_clients_to_storage():
+    temp_table = '{}.tmp'.format(CLIENTS_TABLE)
+    with open(temp_table, mode="w") as f:
+        writer = csv.DictWriter(f, fieldnames=CLIENTS_SCHEMA)
+        writer.writerows(clients)
+
+    os.remove(CLIENTS_TABLE)
+    os.rename(temp_table, CLIENTS_TABLE)   
             
 def create_client(client):
     global clients
@@ -95,6 +88,7 @@ def welcome():
     print("[S]earch client")
 
 def run():
+    initialize_clients()
     welcome()
 
 if __name__ == "__main__":
@@ -108,7 +102,7 @@ if __name__ == "__main__":
         'name': _get_client_field('name'),
         'company': _get_client_field('company'),
         'email': _get_client_field('email'),
-        'position': _get_client_field('position'),
+        'role': _get_client_field('position'),
         }
         create_client(client)
         list_clients()
@@ -138,3 +132,5 @@ if __name__ == "__main__":
     
     else:
         print(f'Sorry but you chose an invalid option')
+    
+    save_clients_to_storage()
